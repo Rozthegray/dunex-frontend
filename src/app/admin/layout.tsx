@@ -52,7 +52,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <aside className="w-64 bg-white dark:bg-[#11111a] text-gray-700 dark:text-[#9899ac] flex flex-col shadow-xl z-20 border-r border-gray-200 dark:border-white/5 transition-colors duration-300">
           <div className="h-20 flex items-center justify-center border-b border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-white/[0.02]">
             <h1 className="text-gray-900 dark:text-white text-2xl font-black tracking-wider text-center">
-              DUNEX<span className="text-blue-600 dark:text-blue-500">OPS</span>
+              DUNEX<span className="text-blue-600 dark:text-blue-500">Admin</span>
             </h1>
           </div>
 
