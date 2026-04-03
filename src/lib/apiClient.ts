@@ -1,10 +1,7 @@
 import axios from 'axios';
 
-// 🚨 FORCED PRODUCTION TEST: 
-// We are bypassing the `isLocal` check to force the admin panel to talk to the live cloud engine.
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://dunex-backend.onrender.com/api/v1';
-
-export { API_URL };
+// 🚨 Production API URL
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://dunex-backend.onrender.com/api/v1';
 
 export const apiClient = axios.create({
   baseURL: API_URL,
@@ -13,7 +10,7 @@ export const apiClient = axios.create({
   },
 });
 
-// 3. Request Interceptor: Attach JWT
+// 1. Request Interceptor: Attach Admin JWT
 apiClient.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('admin_token');
@@ -24,11 +21,11 @@ apiClient.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
-// 4. Response Interceptor (Handles session expiry)
+// 2. Response Interceptor (Handles session expiry)
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // If the server returns 401, the token is dead. Redirect to login.
+    // If the server returns 401, the token is dead. Redirect to admin login.
     if (error.response && error.response.status === 401) {
       if (typeof window !== 'undefined') {
         localStorage.removeItem('admin_token');
