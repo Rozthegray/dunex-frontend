@@ -27,7 +27,7 @@ export default function Sidebar() {
   return (
     <div className="w-64 bg-gray-900 border-r border-gray-800 min-h-screen flex flex-col text-gray-300">
       <div className="p-6">
-        <h2 className="text-2xl font-bold text-white tracking-wider">DUNEX<span className="text-blue-500">OPS</span></h2>
+        <h2 className="text-2xl font-bold text-white tracking-wider">DUNEX<span className="text-blue-500">ADMIN</span></h2>
       </div>
       <nav className="flex-1 px-4 space-y-2">
         {navItems.map((item) => {

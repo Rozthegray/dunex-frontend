@@ -6,10 +6,11 @@ import {
   XCircle, Clock, FileImage, ShieldCheck, ExternalLink,
   User, Mail, Landmark
 } from 'lucide-react';
+// 🚨 Import the centralized client and the dynamic URL
+import { apiClient, API_URL } from '@/src/lib/apiClient';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
-const HOST_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace('/api/v1', '');
-const ADMIN_TOKEN = () => typeof window !== "undefined" ? localStorage.getItem("admin_token") || "" : "";
+// 🚨 Use the imported API_URL to generate the HOST_URL for legacy images
+const HOST_URL = API_URL.replace('/api/v1', '');
 
 interface Order {
   id: string;
@@ -19,9 +20,8 @@ interface Order {
   status: string;
   reference: string;
   proof_url: string | null;
-  destination_details: string | null; // 🚨 Added for Withdrawals
+  destination_details: string | null;
   created_at: string;
-  // 🚨 Added to capture User Dossier info from the backend
   user?: {
     full_name: string;
     email: string;
@@ -34,15 +34,22 @@ export default function ManageOrdersPage() {
   const [filter, setFilter] = useState('pending');
   const [loading, setLoading] = useState(true);
 
+  // 🚨 NEW HELPER: Safely handles Cloudinary Links vs Legacy Links
+  const getImageUrl = (url: string | null) => {
+    if (!url) return '';
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url; // It's Cloudinary, return exactly as is!
+    }
+    return `${HOST_URL}${url}`; // It's legacy, prepend the backend host.
+  };
+
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/admin/orders?status=${filter}`, {
-        headers: { Authorization: `Bearer ${ADMIN_TOKEN()}` }
+      const response = await apiClient.get('/admin/orders', {
+        params: { status: filter }
       });
-      if (response.ok) {
-        setOrders(await response.json());
-      }
+      setOrders(response.data);
     } catch (error) {
       console.error("Failed to fetch orders", error);
     } finally {
@@ -58,21 +65,12 @@ export default function ManageOrdersPage() {
     if (!confirm(`Are you sure you want to ${action.toUpperCase()} this transaction?`)) return;
     
     try {
-      const response = await fetch(`${API_BASE}/admin/orders/${orderId}/${action}`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${ADMIN_TOKEN()}` }
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || `Failed to ${action}`);
-      }
-
+      await apiClient.post(`/admin/orders/${orderId}/${action}`);
       alert(`Transaction ${action.toUpperCase()}D successfully!`);
       fetchOrders(); 
     } catch (error: any) {
       console.error(`Failed to ${action} order`, error);
-      alert(error.message);
+      alert(error.response?.data?.detail || `Failed to ${action}`);
     }
   };
 
@@ -129,6 +127,9 @@ export default function ManageOrdersPage() {
             orders.map((order) => {
               const isDeposit = order.transaction_type.toLowerCase() === 'deposit';
               
+              // 🚨 Calculate the safe image URL once per order
+              const safeImageUrl = getImageUrl(order.proof_url);
+              
               return (
                 <div key={order.id} className="bg-white dark:bg-[#0a0a0f]/80 backdrop-blur-xl border border-gray-200 dark:border-white/5 rounded-3xl p-6 shadow-xl dark:shadow-2xl flex flex-col md:flex-row gap-6 transition-all hover:border-blue-200 dark:hover:border-white/10 group">
                   
@@ -160,7 +161,7 @@ export default function ManageOrdersPage() {
                       </p>
                     </div>
 
-                    {/* NEW: CLIENT DOSSIER & DESTINATION */}
+                    {/* CLIENT DOSSIER & DESTINATION */}
                     <div className="mb-6 bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/5 rounded-2xl p-4 space-y-3">
                       <div className="flex items-center gap-3">
                         <User size={14} className="text-blue-500" />
@@ -175,7 +176,6 @@ export default function ManageOrdersPage() {
                         </span>
                       </div>
 
-                      {/* WITHDRAWAL DESTINATION BOX */}
                       {/* WITHDRAWAL DESTINATION BOX */}
                       {!isDeposit && (
                         <div className="pt-3 border-t border-gray-200 dark:border-white/5 mt-3">
@@ -234,12 +234,14 @@ export default function ManageOrdersPage() {
                       <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 ml-1">Payment Proof</p>
                       {order.proof_url ? (
                         <div 
-                          onClick={() => window.open(`${HOST_URL}${order.proof_url}`, '_blank')}
+                          // 🚨 FIXED: Now uses the safeImageUrl
+                          onClick={() => window.open(safeImageUrl, '_blank')}
                           className="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-[#05050a] flex-1 min-h-[200px] flex items-center justify-center cursor-pointer group/img transition-colors"
                         >
                           <FileImage className="text-gray-400 dark:text-gray-600 absolute" size={32} />
                           <img 
-                            src={`${HOST_URL}${order.proof_url}`} 
+                            // 🚨 FIXED: Now uses the safeImageUrl
+                            src={safeImageUrl} 
                             alt="Payment Proof" 
                             className="w-full h-full object-cover opacity-60 group-hover/img:opacity-100 group-hover/img:scale-105 transition-all duration-500 relative z-10"
                           />

@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, Shield, ShieldAlert, CheckCircle2, XCircle, ArrowUpRight, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
-const ADMIN_TOKEN = () => typeof window !== "undefined" ? localStorage.getItem("admin_token") || "" : "";
+// 🚨 Import apiClient
+import { apiClient } from '../../../lib/apiClient';
 
 interface User {
   id: string;
@@ -20,19 +19,16 @@ interface User {
 export default function ManageUsersPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const sidebarFilter = searchParams.get('filter'); // Captures ?filter=banned from sidebar
+  const sidebarFilter = searchParams.get('filter');
   
-  // State
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
   
-  // Filters & Pagination
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   
-  // Map Sidebar Filters to actual Database Filters
   const [kycFilter, setKycFilter] = useState(sidebarFilter === 'kyc-pending' ? 'pending' : 'all');
   const [statusFilter, setStatusFilter] = useState(
     sidebarFilter === 'active' ? 'true' : sidebarFilter === 'banned' ? 'false' : 'all'
@@ -41,41 +37,34 @@ export default function ManageUsersPage() {
   const limit = 15;
   const totalPages = Math.ceil(total / limit);
 
-  // Sync state if sidebar link is clicked
   useEffect(() => {
     if (sidebarFilter === 'kyc-pending') setKycFilter('pending');
     if (sidebarFilter === 'active') setStatusFilter('true');
     if (sidebarFilter === 'banned') setStatusFilter('false');
   }, [sidebarFilter]);
 
-  // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchQuery), 500);
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Fetch Users
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        let endpoint = `/admin/users?page=${page}&limit=${limit}`;
-        if (debouncedSearch) endpoint += `&search=${encodeURIComponent(debouncedSearch)}`;
-        if (kycFilter !== 'all') endpoint += `&kyc_status=${kycFilter}`;
-        if (statusFilter !== 'all') endpoint += `&is_active=${statusFilter}`; // New Active/Banned filter
-
-        const response = await fetch(`${API_BASE}${endpoint}`, {
-          headers: { 
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${ADMIN_TOKEN()}` 
+        // 🚨 Use apiClient. Axios cleanly handles the query parameters.
+        const response = await apiClient.get('/admin/users', {
+          params: {
+            page,
+            limit,
+            search: debouncedSearch || undefined,
+            kyc_status: kycFilter !== 'all' ? kycFilter : undefined,
+            is_active: statusFilter !== 'all' ? statusFilter : undefined
           }
         });
-
-        if (response.ok) {
-          const data = await response.json();
-          setUsers(data.users);
-          setTotal(data.total);
-        }
+        
+        setUsers(response.data.users);
+        setTotal(response.data.total);
       } catch (error) {
         console.error("Network error fetching users", error);
       } finally {
@@ -85,7 +74,6 @@ export default function ManageUsersPage() {
     
     fetchUsers();
   }, [page, debouncedSearch, kycFilter, statusFilter]);
-
 
   return (
     <div className="relative min-h-full pb-10">
@@ -99,8 +87,6 @@ export default function ManageUsersPage() {
 
       {/* CONTROLS (Search & Filters) */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-        
-        {/* Search Bar */}
         <div className="relative w-full md:w-96">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
           <input 
@@ -112,7 +98,6 @@ export default function ManageUsersPage() {
           />
         </div>
 
-        {/* KYC Filters */}
         <div className="flex items-center gap-2 bg-white dark:bg-[#0a0a0f]/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-1.5 rounded-xl shadow-sm dark:shadow-none overflow-x-auto w-full md:w-auto">
           <Filter size={16} className="text-gray-500 mx-2 hidden sm:block" />
           <FilterButton label="All Clients" active={kycFilter === 'all'} onClick={() => { setKycFilter('all'); setPage(1); }} />
@@ -124,7 +109,6 @@ export default function ManageUsersPage() {
 
       {/* DATA TABLE */}
       <div className="bg-white dark:bg-[#0a0a0f]/80 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-white/5 overflow-hidden shadow-xl dark:shadow-2xl transition-colors relative min-h-[400px]">
-        
         {loading && (
           <div className="absolute inset-0 z-10 bg-white/50 dark:bg-[#05050a]/50 backdrop-blur-sm flex items-center justify-center">
             <div className="w-8 h-8 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
@@ -154,7 +138,6 @@ export default function ManageUsersPage() {
                     onClick={() => router.push(`/admin/users/${user.id}`)}
                     className="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors group cursor-pointer"
                   >
-                    {/* Identity */}
                     <td className="p-5 pl-6">
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 flex items-center justify-center text-sm font-bold text-blue-700 dark:text-blue-400 shadow-sm">
@@ -166,8 +149,6 @@ export default function ManageUsersPage() {
                         </div>
                       </div>
                     </td>
-
-                    {/* KYC Clearance */}
                     <td className="p-5">
                       <div className="flex items-center gap-2">
                         {user.kyc_status === 'verified' && <Shield className="text-emerald-500" size={16} />}
@@ -184,8 +165,6 @@ export default function ManageUsersPage() {
                         </span>
                       </div>
                     </td>
-
-                    {/* Status */}
                     <td className="p-5">
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] uppercase tracking-wider font-bold ${
                         user.is_active 
@@ -196,13 +175,9 @@ export default function ManageUsersPage() {
                         {user.is_active ? 'Active' : 'Suspended'}
                       </span>
                     </td>
-
-                    {/* Joined Date */}
                     <td className="p-5 text-gray-600 dark:text-gray-400 text-sm font-mono">
                       {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                     </td>
-
-                    {/* Action */}
                     <td className="p-5 text-right pr-6">
                       <button className="text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors p-2 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg">
                         <ArrowUpRight size={18} />
@@ -240,13 +215,11 @@ export default function ManageUsersPage() {
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );
 }
 
-// Helper Component for Tabs
 function FilterButton({ label, active, onClick }: { label: string, active: boolean, onClick: () => void }) {
   return (
     <button 

@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { apiClient } from '@/src/lib/apiClient'; // Update this path to match your project's apiClient location
+import { apiClient } from '@/src/lib/apiClient'; 
 import { MessageSquare } from 'lucide-react';
 
 // ─────────────────────────────────────────────
-const API_BASE  = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+// 🚨 FORCED PRODUCTION TEST: Pointing straight to Render
+const API_BASE  = process.env.NEXT_PUBLIC_API_URL || "https://dunex-backend.onrender.com/api/v1";
 const WS_BASE   = API_BASE.replace(/^http/i, "ws").replace(/^https/i, "wss");
+
 const ADMIN_TOKEN = () => {
   if (typeof window !== 'undefined') {
     return localStorage.getItem("admin_token") || "";
@@ -135,7 +137,15 @@ export default function AdminChatPanel() {
 
   useEffect(() => {
     const connect = () => {
-      const socket = new WebSocket(`${WS_BASE}/chat/ws/admin/${adminId.current}`);
+      const token = ADMIN_TOKEN();
+      if (!token) {
+        console.error("[WS Admin] No token found. Aborting connection.");
+        return;
+      }
+
+      // 🚨 THE FIX: Appending the token directly into the URL query
+      const socketUrl = `${WS_BASE}/chat/ws/admin/${adminId.current}?token=${token}`;
+      const socket = new WebSocket(socketUrl);
       ws.current = socket;
 
       socket.onopen = () => {
@@ -221,6 +231,8 @@ export default function AdminChatPanel() {
       ws.current?.close(1000, "Unmounted");
     };
   }, [loadChatList]);
+
+  // ... (Keep the rest of your exact sendReply, handleInputChange, and return render logic)
 
   // ── Send reply ─────────────────────────────────────────────
 
