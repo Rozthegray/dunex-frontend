@@ -1,12 +1,8 @@
 import axios from 'axios';
 
-// 1. Detect environment
-const isLocal = typeof window !== 'undefined' && 
-                (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-
-// 2. Set Base URL
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 
-                (isLocal ? 'http://localhost:8000/api/v1' : 'https://dunex-backend.onrender.com/api/v1');
+// 🚨 FORCED PRODUCTION TEST: 
+// We are bypassing the `isLocal` check to force the admin panel to talk to the live cloud engine.
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://dunex-backend.onrender.com/api/v1';
 
 export { API_URL };
 
@@ -28,7 +24,7 @@ apiClient.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
-// 🚨 4. NEW: Response Interceptor (Handles session expiry)
+// 4. Response Interceptor (Handles session expiry)
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
