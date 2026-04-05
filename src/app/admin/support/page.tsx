@@ -113,8 +113,28 @@ export default function AdminSupportPage() {
                   <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed whitespace-pre-wrap">{t.message}</p>
                   
                   {t.attachment && (
-                    <div className="mt-4 p-2 bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 rounded-lg inline-flex items-center gap-2 text-xs font-bold text-blue-600 dark:text-blue-400">
-                      📎 Attached: {t.attachment}
+                    <div className="mt-4 flex flex-col gap-3">
+                      {/* Clickable Link */}
+                      <a 
+                        href={t.attachment}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-fit p-2.5 bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 hover:bg-blue-100 dark:hover:bg-blue-500/30 rounded-lg inline-flex items-center gap-2 text-xs font-bold text-blue-600 dark:text-blue-400 transition-colors shadow-sm"
+                      >
+                        📎 View Attachment Document
+                      </a>
+                      
+                      {/* Inline Image Preview (Only renders if it's a valid URL) */}
+                      {t.attachment.startsWith('http') && (
+                        <div className="relative w-full max-w-[250px] rounded-xl overflow-hidden border border-gray-200 dark:border-white/10 shadow-lg">
+                          <img 
+                            src={t.attachment} 
+                            alt="User Ticket Attachment" 
+                            className="w-full h-auto object-cover hover:scale-105 transition-transform duration-300 cursor-pointer"
+                            onClick={() => window.open(t.attachment, '_blank')}
+                          />
+                        </div>
+                      )}
                     </div>
                   )}
                   
