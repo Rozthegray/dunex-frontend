@@ -10,7 +10,10 @@ import {
 } from 'lucide-react';
 
 // ─── iOS Add-to-Homescreen Modal ──────────────────────────────────────────────
-function IOSModal({ onClose }) {
+interface IOSModalProps {
+  onClose: () => void;
+}
+function IOSModal({ onClose }: IOSModalProps) { 
   const [step, setStep] = useState(0);
 
   const steps = [

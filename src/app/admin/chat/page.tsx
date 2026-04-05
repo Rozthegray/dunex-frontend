@@ -143,7 +143,6 @@ export default function AdminChatPanel() {
         return;
       }
 
-      // 🚨 THE FIX: Appending the token directly into the URL query
       const socketUrl = `${WS_BASE}/chat/ws/admin/${adminId.current}?token=${token}`;
       const socket = new WebSocket(socketUrl);
       ws.current = socket;
@@ -161,9 +160,7 @@ export default function AdminChatPanel() {
         let p: any;
         try { p = JSON.parse(data); } catch { return; }
 
-        // ── Incoming user message ──
         if (p.type === "message") {
-          // Add to chat window if this user is open
           if (p.user_id === activeUserRef.current) {
             setMessages(prev =>
               prev.some(m => m.id === p.id)
@@ -173,7 +170,6 @@ export default function AdminChatPanel() {
             scrollBottom();
           }
 
-          // Update sidebar
           setChatList(prev => {
             const exists = prev.find(c => c.user_id === p.user_id);
             const delta  = p.sender_type === "user" && p.user_id !== activeUserRef.current ? 1 : 0;
@@ -184,18 +180,15 @@ export default function AdminChatPanel() {
                   : c
               ).sort((a, b) => (b.last_message_at ?? "").localeCompare(a.last_message_at ?? ""));
             }
-            // New user started chatting — reload full list
             loadChatList();
             return prev;
           });
         }
 
-        // ── Admin message echo (delivery confirmation) ──
         else if (p.type === "message" && p.sender_type === "admin") {
           setMessages(prev => prev.map(m => m.pending && m.content === p.content ? { ...m, id: p.id, pending: false, status: "delivered" } : m));
         }
 
-        // ── Typing ──
         else if (p.type === "typing" && p.user_id === activeUserRef.current) {
           setUserTyping(p.is_typing);
           if (typingTimer.current) clearTimeout(typingTimer.current);
@@ -204,7 +197,6 @@ export default function AdminChatPanel() {
           }
         }
 
-        // ── Presence ──
         else if (p.type === "user_online" || p.type === "user_offline") {
           setChatList(prev =>
             prev.map(c => c.user_id === p.user_id ? { ...c, is_online: p.type === "user_online" } : c)
@@ -232,15 +224,12 @@ export default function AdminChatPanel() {
     };
   }, [loadChatList]);
 
-  // ... (Keep the rest of your exact sendReply, handleInputChange, and return render logic)
-
   // ── Send reply ─────────────────────────────────────────────
 
   const sendReply = useCallback(() => {
     const content = inputText.trim();
     if (!content || !activeUser || ws.current?.readyState !== WebSocket.OPEN) return;
 
-    // Optimistic bubble
     const tempId = `pending-${Date.now()}`;
     setMessages(prev => [
       ...prev,
@@ -249,7 +238,6 @@ export default function AdminChatPanel() {
     setInputText("");
     scrollBottom();
 
-    // Stop typing
     if (isAdminTypingRef.current) {
       ws.current.send(JSON.stringify({ type: "typing", user_id: activeUser.user_id, is_typing: false }));
       isAdminTypingRef.current = false;
@@ -290,8 +278,8 @@ export default function AdminChatPanel() {
   return (
     <div style={s.root}>
 
-      {/* ── Sidebar ───────────────────────────── */}
-      <aside style={s.sidebar}>
+      {/* ── Sidebar (Hides on mobile if a user is active) ── */}
+      <aside className={`mobile-sidebar ${activeUser ? 'hide-on-mobile' : ''}`} style={s.sidebar}>
 
         {/* Sidebar header */}
         <div style={s.sidebarHeader}>
@@ -360,8 +348,8 @@ export default function AdminChatPanel() {
         </div>
       </aside>
 
-      {/* ── Chat Window ───────────────────────── */}
-      <main style={s.chatPanel}>
+      {/* ── Chat Window (Hides on mobile if NO user is active) ── */}
+      <main className={`mobile-chatpanel ${!activeUser ? 'hide-on-mobile' : ''}`} style={s.chatPanel}>
         {!activeUser ? (
           <div style={s.emptyChat}>
             <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="1.5">
@@ -374,6 +362,17 @@ export default function AdminChatPanel() {
             {/* Chat header */}
             <div style={s.chatHeader}>
               <div style={s.chatHeaderLeft}>
+                {/* 🚨 NEW: Mobile Back Button */}
+                <button 
+                  className="mobile-back-btn" 
+                  onClick={() => { setActiveUser(null); activeUserRef.current = null; }}
+                  style={{ display: "none", background: "transparent", border: "none", color: "#f1f5f9", cursor: "pointer", marginRight: "12px", padding: "4px" }}
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
+
                 <div style={s.chatHeaderAvatar}>
                   {(activeUser.full_name || activeUser.email)[0].toUpperCase()}
                 </div>
@@ -455,7 +454,7 @@ export default function AdminChatPanel() {
         )}
       </main>
 
-      {/* Typing dot animation */}
+      {/* 🚨 NEW: Mobile Media Queries inside the style block */}
       <style>{`
         @keyframes typingBounce {
           0%, 80%, 100% { transform: translateY(0); }
@@ -465,6 +464,23 @@ export default function AdminChatPanel() {
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+
+        @media (max-width: 768px) {
+          .mobile-sidebar {
+            width: 100% !important;
+            border-right: none !important;
+          }
+          .mobile-chatpanel {
+            width: 100% !important;
+          }
+          .hide-on-mobile {
+            display: none !important;
+          }
+          .mobile-back-btn {
+            display: flex !important;
+            align-items: center;
+          }
+        }
       `}</style>
     </div>
   );
