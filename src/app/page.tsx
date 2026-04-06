@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import {
-  Apple, Smartphone, ShieldCheck, Zap, BarChart3,
+  Apple, Smartphone, ShieldCheck, Zap,
   Headset, Lock, Globe, ChevronRight, X,
   CheckCircle2, TrendingUp, Users, Award,
   FileCheck, Eye, Fingerprint, AlertTriangle,
@@ -18,14 +18,14 @@ function IOSModal({ onClose }: IOSModalProps) {
 
   const steps = [
     {
-      icon: <Globe size={32} className="text-blue-400" />,
+      icon: <Globe size={32} className="text-purple-400" />,
       title: "Open Safari",
-      desc: "Launch Apple Safari on your iPhone or iPad. Please ensure you are using Safari, as this feature relies on native iOS capabilities.",
+      desc: "Launch Apple Safari on your iPhone or iPad. Please ensure you are using Safari, as this feature relies on Apple's built-in tools.",
       visual: (
         <div className="relative w-full h-40 bg-[#0d0d1a] rounded-2xl border border-gray-800 flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 to-transparent" />
           <div className="flex flex-col items-center gap-2 z-10">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/30">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
               <Globe size={30} className="text-white" />
             </div>
             <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Safari</span>
@@ -34,23 +34,23 @@ function IOSModal({ onClose }: IOSModalProps) {
       ),
     },
     {
-      icon: <Globe size={32} className="text-cyan-400" />,
-      title: "Navigate to the Portal",
-      desc: "In the Safari address bar, enter the official Dunex Markets application URL.",
+      icon: <Globe size={32} className="text-blue-400" />,
+      title: "Navigate to the Website",
+      desc: "In the Safari address bar at the bottom or top of your screen, enter our official secure address.",
       visual: (
         <div className="w-full bg-[#0d0d1a] rounded-2xl border border-gray-800 p-4">
           <div className="flex items-center gap-2 bg-gray-900 rounded-xl px-4 py-3 border border-gray-700">
             <Lock size={14} className="text-green-400 flex-shrink-0" />
-            <span className="text-sm font-mono text-blue-400 truncate">app.dunexmarkets.com</span>
+            <span className="text-sm font-mono text-purple-400 truncate">app.dunexmarkets.com</span>
           </div>
           <p className="text-xs text-gray-500 mt-2 text-center">Tap and hold to copy ↑</p>
         </div>
       ),
     },
     {
-      icon: <Share size={32} className="text-blue-400" />,
-      title: 'Access the Share Menu',
-      desc: 'At the bottom navigation bar of Safari, tap the Share icon (a square with an upward-pointing arrow).',
+      icon: <Share size={32} className="text-purple-400" />,
+      title: 'Tap the Share Button',
+      desc: 'At the bottom of Safari, tap the Share icon (it looks like a square with an arrow pointing up out of it).',
       visual: (
         <div className="w-full bg-[#0d0d1a] rounded-2xl border border-gray-800 p-4 relative">
           <div className="h-8 bg-gray-900 rounded-lg mb-3 flex items-center px-4">
@@ -60,20 +60,20 @@ function IOSModal({ onClose }: IOSModalProps) {
           <div className="h-12 bg-[#111] rounded-xl flex items-center justify-around border-t border-gray-800">
             <div className="text-gray-700"><MoreHorizontal size={20} /></div>
             <div className="text-gray-700"><Home size={20} /></div>
-            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.5)] animate-pulse">
+            <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center shadow-[0_0_15px_rgba(147,51,234,0.5)] animate-pulse">
               <Share size={18} className="text-white" />
             </div>
             <div className="text-gray-700"><Plus size={20} /></div>
             <div className="text-gray-700"><MoreHorizontal size={20} /></div>
           </div>
-          <div className="absolute bottom-14 left-1/2 -translate-x-1/2 w-0 h-0" style={{borderLeft:'8px solid transparent',borderRight:'8px solid transparent',borderTop:'10px solid #3b82f6'}} />
+          <div className="absolute bottom-14 left-1/2 -translate-x-1/2 w-0 h-0" style={{borderLeft:'8px solid transparent',borderRight:'8px solid transparent',borderTop:'10px solid #9333ea'}} />
         </div>
       ),
     },
     {
-      icon: <Plus size={32} className="text-cyan-400" />,
+      icon: <Plus size={32} className="text-blue-400" />,
       title: 'Add to Home Screen',
-      desc: 'Scroll through the Share menu options and select "Add to Home Screen", then confirm by tapping "Add".',
+      desc: 'Scroll down through the menu list until you see "Add to Home Screen", tap it, then confirm by tapping "Add" in the top corner.',
       visual: (
         <div className="w-full bg-[#0d0d1a] rounded-2xl border border-gray-800 overflow-hidden">
           <div className="bg-gray-900 px-4 py-3 flex items-center justify-between border-b border-gray-800">
@@ -86,23 +86,23 @@ function IOSModal({ onClose }: IOSModalProps) {
               <span className="text-sm text-gray-400">{item}</span>
             </div>
           ))}
-          <div className="px-4 py-3 flex items-center gap-3 bg-blue-500/10 border border-blue-500/30 mx-2 my-1 rounded-xl">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+          <div className="px-4 py-3 flex items-center gap-3 bg-purple-500/10 border border-purple-500/30 mx-2 my-1 rounded-xl">
+            <div className="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center">
               <Plus size={16} className="text-white" />
             </div>
-            <span className="text-sm font-bold text-blue-300">Add to Home Screen</span>
+            <span className="text-sm font-bold text-purple-300">Add to Home Screen</span>
           </div>
         </div>
       ),
     },
     {
       icon: <CheckCircle2 size={32} className="text-green-400" />,
-      title: "Installation Complete",
-      desc: "The Dunex Markets portal is now securely accessible directly from your home screen.",
+      title: "Setup Complete",
+      desc: "The Dunex Markets app is now securely placed on your phone's home screen. Tap our logo anytime to log in.",
       visual: (
         <div className="w-full bg-[#0d0d1a] rounded-2xl border border-gray-800 p-6 flex flex-col items-center gap-4">
-          <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.5)]">
-            <BarChart3 size={36} className="text-white" strokeWidth={2.5} />
+          <div className="w-20 h-20 rounded-3xl bg-[#05050A] flex items-center justify-center shadow-[0_0_30px_rgba(147,51,234,0.3)] border border-gray-800">
+            <img src="/icon.png" alt="Dunex Logo" className="w-14 h-14 object-contain" />
           </div>
           <div className="text-center">
             <p className="font-bold text-white text-lg">Dunex Markets</p>
@@ -123,15 +123,15 @@ function IOSModal({ onClose }: IOSModalProps) {
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
       <div
-        className="relative bg-[#0a0a0f] border border-gray-800 rounded-3xl w-full max-w-md p-6 shadow-[0_0_60px_rgba(59,130,246,0.15)] overflow-hidden"
+        className="relative bg-[#0a0a0f] border border-gray-800 rounded-3xl w-full max-w-md p-6 shadow-[0_0_60px_rgba(147,51,234,0.15)] overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-blue-600/20 blur-[60px] rounded-full pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-purple-600/20 blur-[60px] rounded-full pointer-events-none" />
 
         <div className="flex items-center justify-between mb-6 relative z-10">
           <div>
-            <p className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-1">iOS Setup Guide</p>
-            <h3 className="text-lg font-black text-white">Application Access</h3>
+            <p className="text-xs font-bold text-purple-400 uppercase tracking-widest mb-1">iPhone / iPad Guide</p>
+            <h3 className="text-lg font-black text-white">App Installation</h3>
           </div>
           <button onClick={onClose} className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors">
             <X size={16} className="text-gray-400" />
@@ -142,15 +142,15 @@ function IOSModal({ onClose }: IOSModalProps) {
           {steps.map((_, i) => (
             <div
               key={i}
-              className={`h-1 flex-1 rounded-full transition-all duration-500 ${i <= step ? 'bg-blue-500' : 'bg-gray-800'}`}
+              className={`h-1 flex-1 rounded-full transition-all duration-500 ${i <= step ? 'bg-purple-500' : 'bg-gray-800'}`}
             />
           ))}
         </div>
 
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-              <span className="text-sm font-black text-blue-400">{step + 1}</span>
+            <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+              <span className="text-sm font-black text-purple-400">{step + 1}</span>
             </div>
             <h4 className="text-xl font-bold text-white">{current.title}</h4>
           </div>
@@ -170,7 +170,7 @@ function IOSModal({ onClose }: IOSModalProps) {
           {step < steps.length - 1 ? (
             <button
               onClick={() => setStep(s => s + 1)}
-              className="flex-1 py-3 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-500 transition-colors flex items-center justify-center gap-2"
+              className="flex-1 py-3 rounded-xl bg-purple-600 text-white font-bold text-sm hover:bg-purple-500 transition-colors flex items-center justify-center gap-2"
             >
               Continue <ChevronRight size={16} />
             </button>
@@ -179,9 +179,9 @@ function IOSModal({ onClose }: IOSModalProps) {
               href="https://app.dunexmarkets.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              className="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
             >
-              Access Portal <ChevronRight size={16} />
+              Access My Account <ChevronRight size={16} />
             </a>
           )}
         </div>
@@ -195,22 +195,20 @@ export default function DunexLandingPage() {
   const [iosModalOpen, setIosModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#05050a] text-white selection:bg-blue-500/30 overflow-hidden font-sans">
+    <div className="min-h-screen bg-[#05050a] text-white selection:bg-purple-500/30 overflow-hidden font-sans">
 
       {iosModalOpen && <IOSModal onClose={() => setIosModalOpen(false)} />}
 
-      {/* AMBIENT GLOWS */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-blue-600/10 blur-[130px] rounded-full pointer-events-none -z-10" />
+      {/* AMBIENT GLOWS - Adjusted to match Logo Gradients */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-purple-600/10 blur-[130px] rounded-full pointer-events-none -z-10" />
       <div className="fixed bottom-0 right-0 w-[600px] h-[600px] bg-cyan-900/10 blur-[150px] rounded-full pointer-events-none -z-10" />
-      <div className="fixed top-1/2 left-0 w-[400px] h-[400px] bg-indigo-900/10 blur-[120px] rounded-full pointer-events-none -z-10" />
+      <div className="fixed top-1/2 left-0 w-[400px] h-[400px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none -z-10" />
 
       {/* NAVBAR */}
       <nav className="fixed w-full top-0 z-50 border-b border-white/5 bg-[#05050a]/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-              <BarChart3 size={18} className="text-white" strokeWidth={3} />
-            </div>
+          <div className="flex items-center gap-3">
+            <img src="/icon.png" alt="Dunex Logo" className="w-10 h-10 object-contain rounded-lg" />
             <span className="text-xl font-black tracking-tight">DUNEX <span className="text-gray-500 font-medium">MARKETS</span></span>
           </div>
 
@@ -225,9 +223,9 @@ export default function DunexLandingPage() {
             href="https://app.dunexmarkets.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white text-black px-5 py-2.5 rounded-full font-bold text-sm hover:bg-gray-200 transition-all hover:scale-105 shadow-[0_0_15px_rgba(255,255,255,0.15)]"
+            className="bg-white text-black px-5 py-2.5 rounded-full font-bold text-sm hover:bg-gray-200 transition-all hover:scale-105 shadow-[0_0_15px_rgba(255,255,255,0.15)] flex items-center gap-2"
           >
-            Client Portal
+            <Lock size={14} className="text-black" /> Secure Online Access
           </a>
         </div>
       </nav>
@@ -237,13 +235,13 @@ export default function DunexLandingPage() {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
 
           <div className="flex-1 text-center lg:text-left z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-widest mb-6">
+              <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
               Regulated · Transparent · Secure
             </div>
             <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.05] mb-6">
               Professional Trading.<br />
-              <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-purple-500 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 Accessible Anywhere.
               </span>
             </h1>
@@ -255,14 +253,14 @@ export default function DunexLandingPage() {
             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
               <button
                 onClick={() => setIosModalOpen(true)}
-                className="group relative flex items-center gap-4 bg-[#0e0e1a] border border-gray-800 p-4 rounded-2xl hover:border-blue-500/60 hover:bg-[#131323] transition-all w-full sm:w-auto shadow-lg"
+                className="group relative flex items-center gap-4 bg-[#0e0e1a] border border-gray-800 p-4 rounded-2xl hover:border-purple-500/60 hover:bg-[#131323] transition-all w-full sm:w-auto shadow-lg"
               >
                 <div className="bg-white text-black p-3 rounded-xl group-hover:scale-110 transition-transform shadow">
                   <Apple size={24} fill="currentColor" />
                 </div>
                 <div className="text-left pr-4">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-widest">Access via</p>
-                  <p className="text-lg font-black text-white">iOS Portal</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-widest">Setup For</p>
+                  <p className="text-lg font-black text-white">Apple iOS</p>
                 </div>
               </button>
 
@@ -271,26 +269,26 @@ export default function DunexLandingPage() {
                 download
                 className="group relative flex items-center gap-4 bg-[#0e0e1a] border border-gray-800 p-4 rounded-2xl hover:border-cyan-500/60 hover:bg-[#131323] transition-all w-full sm:w-auto shadow-lg"
               >
-                <div className="bg-gradient-to-br from-cyan-400 to-blue-600 text-white p-3 rounded-xl group-hover:scale-110 transition-transform">
+                <div className="bg-gradient-to-br from-blue-500 to-cyan-400 text-white p-3 rounded-xl group-hover:scale-110 transition-transform">
                   <Smartphone size={24} />
                 </div>
                 <div className="text-left pr-4">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-widest">Download for</p>
-                  <p className="text-lg font-black text-white">Android APK</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-widest">Download For</p>
+                  <p className="text-lg font-black text-white">Android Phones</p>
                 </div>
               </a>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 mt-5 justify-center lg:justify-start text-xs text-gray-600">
               <span className="flex items-center gap-1.5"><ShieldCheck size={14} className="text-green-500" /> Secure encrypted connection</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-blue-500" /> Compliant infrastructure</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-purple-500" /> Compliant infrastructure</span>
             </div>
           </div>
 
           {/* Phone Mockup */}
           <div className="flex-1 relative hidden md:flex justify-center z-10">
-            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 to-cyan-500/10 blur-3xl rounded-full" />
-            <div className="relative w-[290px] h-[590px] bg-[#0a0a0f] border-[7px] border-gray-800 rounded-[3rem] shadow-2xl overflow-hidden transform rotate-[-4deg] hover:rotate-0 transition-all duration-700 hover:shadow-[0_0_60px_rgba(59,130,246,0.15)]">
+            <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-cyan-500/10 blur-3xl rounded-full" />
+            <div className="relative w-[290px] h-[590px] bg-[#0a0a0f] border-[7px] border-gray-800 rounded-[3rem] shadow-2xl overflow-hidden transform rotate-[-4deg] hover:rotate-0 transition-all duration-700 hover:shadow-[0_0_60px_rgba(147,51,234,0.15)]">
               <div className="absolute top-0 inset-x-0 h-7 flex justify-center z-20">
                 <div className="w-28 h-7 bg-gray-900 rounded-b-3xl" />
               </div>
@@ -311,12 +309,12 @@ export default function DunexLandingPage() {
                   <svg viewBox="0 0 100 50" className="w-full h-full overflow-visible" preserveAspectRatio="none">
                     <defs>
                       <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#3b82f6" />
+                        <stop offset="0%" stopColor="#a855f7" />
                         <stop offset="100%" stopColor="#22d3ee" />
                       </linearGradient>
                       <linearGradient id="fill2" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
-                        <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+                        <stop offset="0%" stopColor="#a855f7" stopOpacity="0.2" />
+                        <stop offset="100%" stopColor="#a855f7" stopOpacity="0" />
                       </linearGradient>
                     </defs>
                     <path d="M0,50 Q10,40 20,45 T40,20 T60,35 T80,10 T100,5 L100,50 Z" fill="url(#fill2)" />
@@ -359,7 +357,7 @@ export default function DunexLandingPage() {
       {/* WHY US */}
       <section id="platform" className="py-32 px-6 max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <p className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-3">Professional Infrastructure</p>
+          <p className="text-xs font-bold text-purple-400 uppercase tracking-widest mb-3">Professional Infrastructure</p>
           <h2 className="text-3xl md:text-5xl font-black mb-5">A Trading Environment<br />Built on Stability</h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
             We focus on providing reliable infrastructure rather than making unrealistic promises. Your trading success depends on your strategy; our job is to provide the stable tools you need to execute it.
@@ -369,7 +367,7 @@ export default function DunexLandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {[
             {
-              icon: <TrendingUp size={24} className="text-blue-400" />,
+              icon: <TrendingUp size={24} className="text-purple-400" />,
               title: 'Direct Market Access',
               desc: 'We route orders directly to established liquidity providers. Experience transparent execution without artificial market making or conflict of interest.',
             },
@@ -379,7 +377,7 @@ export default function DunexLandingPage() {
               desc: 'Clear, upfront fee structures. We believe in building long-term partnerships, which starts with absolute clarity on all trading costs and spreads.',
             },
             {
-              icon: <Headset size={24} className="text-purple-400" />,
+              icon: <Headset size={24} className="text-blue-400" />,
               title: 'Dedicated Assistance',
               desc: 'From technical onboarding to account management, our specialized support team is structured to resolve your platform queries efficiently and professionally.',
             },
@@ -397,9 +395,9 @@ export default function DunexLandingPage() {
 
       {/* CORE POLICIES & PAYOUTS (The "No Lies" section) */}
       <section id="policies" className="py-20 px-6 max-w-7xl mx-auto relative z-10 border-t border-gray-900">
-        <div className="bg-gradient-to-r from-blue-900/10 to-cyan-900/10 border border-blue-500/20 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-12">
+        <div className="bg-gradient-to-r from-purple-900/10 to-cyan-900/10 border border-purple-500/20 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-12">
           <div className="flex-shrink-0 w-20 h-20 rounded-3xl bg-[#0a0a0f] border border-gray-800 flex items-center justify-center shadow-xl">
-            <Award size={32} className="text-blue-400" />
+            <Award size={32} className="text-purple-400" />
           </div>
           <div className="text-center md:text-left flex-1">
             <h3 className="text-2xl md:text-3xl font-black text-white mb-4">Our Standard for Withdrawals</h3>
@@ -408,7 +406,7 @@ export default function DunexLandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="bg-[#0a0a0f] border border-gray-800 rounded-xl p-4 flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-blue-500" />
+                <div className="w-2 h-2 rounded-full bg-purple-500" />
                 <span className="text-sm font-medium text-gray-300">Processing: 6 - 12 Hours</span>
               </div>
               <div className="bg-[#0a0a0f] border border-gray-800 rounded-xl p-4 flex items-center gap-3">
@@ -426,7 +424,7 @@ export default function DunexLandingPage() {
       {/* TESTIMONIALS */}
       <section id="testimonials" className="py-24 px-6 max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <p className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-3">Client Experiences</p>
+          <p className="text-xs font-bold text-purple-400 uppercase tracking-widest mb-3">Client Experiences</p>
           <h2 className="text-3xl md:text-4xl font-black mb-5">Trusted by Active Traders</h2>
         </div>
 
@@ -455,7 +453,7 @@ export default function DunexLandingPage() {
               </div>
               <div className="flex items-center justify-between pt-6 border-t border-gray-800/50">
                 <span className="text-xs font-bold text-white uppercase tracking-wider">{review.author}</span>
-                <span className="text-[10px] font-medium text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-full">{review.tag}</span>
+                <span className="text-[10px] font-medium text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-full">{review.tag}</span>
               </div>
             </div>
           ))}
@@ -480,12 +478,12 @@ export default function DunexLandingPage() {
               desc: 'Data transmission is secured utilizing advanced encryption standards to protect sensitive financial information from unauthorized access.',
             },
             {
-              icon: <Fingerprint size={22} className="text-blue-400" />,
+              icon: <Fingerprint size={22} className="text-purple-400" />,
               title: 'Strict Authentication Controls',
               desc: 'Account access is fortified with multi-factor authentication protocols, adding a necessary layer of verification for all users.',
             },
             {
-              icon: <ShieldCheck size={22} className="text-purple-400" />,
+              icon: <ShieldCheck size={22} className="text-blue-400" />,
               title: 'Segregated Capital',
               desc: 'Client funds are maintained in segregated accounts, ensuring they are separated from corporate operational capital at all times.',
             },
@@ -514,21 +512,21 @@ export default function DunexLandingPage() {
           <div className="max-w-xl text-center md:text-left">
             <h2 className="text-2xl font-black text-white mb-4">Regulatory Compliance & Verification</h2>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              To maintain platform integrity and comply with international Anti-Money Laundering (AML) directives, all clients must complete a standard Know Your Customer (KYC) identity verification process before initiating withdrawals.
+              To maintain platform integrity and comply with international Anti-Money Laundering (AML) directives, all clients must complete a standard identity verification process before initiating withdrawals.
             </p>
             <div className="flex flex-wrap justify-center md:justify-start gap-3">
               <span className="flex items-center gap-1.5 text-xs font-medium text-gray-300 bg-gray-900 px-3 py-1.5 rounded-full border border-gray-800">
-                <FileCheck size={14} className="text-blue-400" /> Identity Verification
+                <FileCheck size={14} className="text-purple-400" /> Identity Verification
               </span>
               <span className="flex items-center gap-1.5 text-xs font-medium text-gray-300 bg-gray-900 px-3 py-1.5 rounded-full border border-gray-800">
-                <Globe size={14} className="text-blue-400" /> AML Screening
+                <Globe size={14} className="text-purple-400" /> Security Screening
               </span>
             </div>
           </div>
           <div className="flex-shrink-0 w-32 h-32 relative">
-            <div className="absolute inset-0 bg-blue-500/10 rounded-full animate-pulse" />
+            <div className="absolute inset-0 bg-purple-500/10 rounded-full animate-pulse" />
             <div className="absolute inset-4 bg-gray-900 rounded-full border border-gray-800 flex items-center justify-center">
-              <ShieldCheck size={32} className="text-blue-400" />
+              <ShieldCheck size={32} className="text-purple-400" />
             </div>
           </div>
         </div>
@@ -545,14 +543,14 @@ export default function DunexLandingPage() {
                 onClick={() => setIosModalOpen(true)}
                 className="flex items-center justify-center gap-3 bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-gray-200 transition-all"
               >
-                <Apple size={20} fill="currentColor" /> iOS Setup
+                <Apple size={20} fill="currentColor" /> iPhone Setup
               </button>
               <a
                 href="/dunex-markets.apk"
                 download
-                className="flex items-center justify-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:bg-blue-500 transition-all"
+                className="flex items-center justify-center gap-3 bg-gradient-to-r from-purple-600 to-blue-500 text-white px-8 py-4 rounded-full font-bold hover:opacity-90 transition-all"
               >
-                <Smartphone size={20} /> Download APK
+                <Smartphone size={20} /> Android Download
               </a>
             </div>
           </div>
@@ -565,10 +563,8 @@ export default function DunexLandingPage() {
           
           {/* Logo & Description */}
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center">
-                <BarChart3 size={16} className="text-white" strokeWidth={3} />
-              </div>
+            <div className="flex items-center gap-3 mb-3">
+              <img src="/icon.png" alt="Dunex Logo" className="w-8 h-8 object-contain rounded-md" />
               <span className="font-black tracking-tight">DUNEX <span className="text-gray-500 font-medium">MARKETS</span></span>
             </div>
             <p className="text-xs text-gray-600 max-w-xs leading-relaxed">
@@ -593,14 +589,14 @@ export default function DunexLandingPage() {
               <div className="flex flex-col gap-2">
                 <a href="#" className="hover:text-gray-300 transition-colors">Privacy Policy</a>
                 <a href="#" className="hover:text-gray-300 transition-colors">Terms of Service</a>
-                <a href="#" className="hover:text-gray-300 transition-colors">AML/KYC Policy</a>
+                <a href="#" className="hover:text-gray-300 transition-colors">Security Policy</a>
               </div>
             </div>
 
-            {/* 🚨 NEW: Corporate Office Address */}
+            {/* Corporate Office Address */}
             <div>
               <p className="text-white font-bold mb-3 flex items-center gap-1.5">
-                <MapPin size={16} className="text-blue-400" /> Corporate Office
+                <MapPin size={16} className="text-purple-400" /> Corporate Office
               </p>
               <div className="flex flex-col gap-1.5 text-gray-500 text-xs">
                 <span>Office No: 812</span>
