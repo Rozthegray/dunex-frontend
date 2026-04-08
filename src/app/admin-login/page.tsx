@@ -12,23 +12,22 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleLogin = async (e: React.FormEvent) => {
+ const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      // 🚨 FASTAPI OAUTH2 FIX: Use URLSearchParams instead of FormData
-      const formData = new URLSearchParams();
-      formData.append('username', email);
-      formData.append('password', password);
+      // 🚨 THE BULLETPROOF FIX: Format as a raw URL-encoded string
+      const payload = `username=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
 
-      const response = await apiClient.post('/auth/login', formData, {
-        // 🚨 Update the header to match
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      const response = await apiClient.post('/auth/login', payload, {
+        headers: { 
+          'Content-Type': 'application/x-www-form-urlencoded' 
+        },
       });
 
-      // Verify the user is actually an admin
+      // Verify the user is actually an admin (Optional but recommended)
       if (response.data.role !== 'admin' && response.data.role !== 'superadmin') {
         setError('Unauthorized. Clearance level too low.');
         setLoading(false);
@@ -37,7 +36,6 @@ export default function AdminLogin() {
 
       localStorage.setItem('admin_token', response.data.access_token);
       router.push('/admin'); // Boot them into the command center
-      
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Authentication failed. Matrix rejected.');
     } finally {
