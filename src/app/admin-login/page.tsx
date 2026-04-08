@@ -18,16 +18,17 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      // FastAPI OAuth2 expects form data
-      const formData = new FormData();
+      // 🚨 FASTAPI OAUTH2 FIX: Use URLSearchParams instead of FormData
+      const formData = new URLSearchParams();
       formData.append('username', email);
       formData.append('password', password);
 
       const response = await apiClient.post('/auth/login', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        // 🚨 Update the header to match
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
 
-      // Verify the user is actually an admin (Optional but recommended)
+      // Verify the user is actually an admin
       if (response.data.role !== 'admin' && response.data.role !== 'superadmin') {
         setError('Unauthorized. Clearance level too low.');
         setLoading(false);
@@ -36,6 +37,7 @@ export default function AdminLogin() {
 
       localStorage.setItem('admin_token', response.data.access_token);
       router.push('/admin'); // Boot them into the command center
+      
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Authentication failed. Matrix rejected.');
     } finally {
