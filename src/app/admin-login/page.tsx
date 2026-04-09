@@ -12,19 +12,19 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleLogin = async (e: React.FormEvent) => {
+ const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      // FastAPI OAuth2 expects form data
-      const formData = new FormData();
-      formData.append('username', email);
-      formData.append('password', password);
+      // 🚨 THE BULLETPROOF FIX: Format as a raw URL-encoded string
+      const payload = `username=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
 
-      const response = await apiClient.post('/auth/login', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response = await apiClient.post('/auth/login', payload, {
+        headers: { 
+          'Content-Type': 'application/x-www-form-urlencoded' 
+        },
       });
 
       // Verify the user is actually an admin (Optional but recommended)
