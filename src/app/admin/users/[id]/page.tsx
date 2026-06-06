@@ -7,7 +7,6 @@ import {
   Wallet, Activity, ShieldCheck, FileImage, ShieldAlert, 
   Trash2, ArrowDownToLine, ArrowUpFromLine, TrendingUp, Gift, Users, MapPin, Phone, Hash
 } from 'lucide-react';
-// 🚨 Import apiClient & API_URL for images
 import { apiClient, API_URL } from '../../../../lib/apiClient';
 
 const HOST_URL = API_URL.replace('/api/v1', '');
@@ -41,7 +40,6 @@ export default function UserDetailPage() {
 
   const fetchUserDetails = async () => {
     try {
-      // 🚨 Replace fetch
       const res = await apiClient.get(`/admin/users/${userId}`);
       const u = res.data;
       
@@ -144,12 +142,15 @@ export default function UserDetailPage() {
     }
   };
 
+  // 🚨 CRITICAL FIX: Direct Cross-Domain Impersonation Routing
   const handleImpersonate = async () => {
     if (!confirm(`Generate a temporary session token for ${formData.email}?`)) return;
     try {
       const res = await apiClient.post(`/admin/users/${userId}/impersonate`);
-      localStorage.setItem('temp_impersonation_token', res.data.access_token);
-      window.open('/dashboard', '_blank');
+      const token = res.data.access_token;
+      
+      // Fires the generated JWT directly into the main app via URL parameter
+      window.open(`https://app.dunexmarkets.com/?impersonate_token=${token}`, '_blank');
     } catch (error: any) {
       alert(error.response?.data?.detail || "Impersonation failed");
     }
@@ -169,7 +170,6 @@ export default function UserDetailPage() {
 
   const handleInputChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  // Helper to ensure image URLs load locally and in production
   const getImageUrl = (url: string) => {
     if (!url) return null;
     return url.startsWith('http') ? url : `${HOST_URL}${url}`;
@@ -288,7 +288,6 @@ export default function UserDetailPage() {
               </div>
             </div>
 
-            {/* 🚨 NEW: Referral Tracking Box */}
             <div className="md:col-span-2 p-4 bg-purple-50 dark:bg-purple-500/5 rounded-xl border border-purple-200 dark:border-purple-500/10 mt-2">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
@@ -331,7 +330,6 @@ export default function UserDetailPage() {
             <div>
               <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Government ID (Passport/License)</p>
               {user.govt_id_url ? (
-                // 🚨 Updated to use dynamic getImageUrl()
                 <a href={getImageUrl(user.govt_id_url) || '#'} target="_blank" rel="noopener noreferrer" className="relative group rounded-xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-[#05050a] aspect-video flex items-center justify-center block">
                   <FileImage className="text-gray-400 dark:text-gray-600 absolute" size={32} />
                   <img src={getImageUrl(user.govt_id_url) || ''} alt="Govt ID" className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity relative z-10" />
@@ -343,7 +341,6 @@ export default function UserDetailPage() {
             <div>
               <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Standard ID Card (Front)</p>
               {user.id_card_url ? (
-                // 🚨 Updated to use dynamic getImageUrl()
                 <a href={getImageUrl(user.id_card_url) || '#'} target="_blank" rel="noopener noreferrer" className="relative group rounded-xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-[#05050a] aspect-video flex items-center justify-center block">
                   <FileImage className="text-gray-400 dark:text-gray-600 absolute" size={32} />
                   <img src={getImageUrl(user.id_card_url) || ''} alt="ID Card" className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity relative z-10" />
