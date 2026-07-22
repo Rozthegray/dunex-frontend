@@ -61,11 +61,26 @@ export default function ManageOrdersPage() {
     fetchOrders();
   }, [filter]);
 
+  // 🚨 THE FIX: Handles the prompt dynamically based on the requested action!
   const handleAction = async (orderId: string, action: 'approve' | 'reject') => {
-    if (!confirm(`Are you sure you want to ${action.toUpperCase()} this transaction?`)) return;
+    let url = `/admin/orders/${orderId}/${action}`;
+
+    if (action === 'reject') {
+      const reason = window.prompt("Enter the reason for rejecting this transaction. (The user will receive this via email and WhatsApp):");
+      
+      if (!reason) {
+          alert("Action cancelled. You must provide a reason.");
+          return; 
+      }
+      
+      // Append the reason safely to the URL parameters
+      url = `${url}?reason=${encodeURIComponent(reason)}`;
+    } else {
+      if (!confirm(`Are you sure you want to APPROVE this transaction?`)) return;
+    }
     
     try {
-      await apiClient.post(`/admin/orders/${orderId}/${action}`);
+      await apiClient.post(url);
       alert(`Transaction ${action.toUpperCase()}D successfully!`);
       fetchOrders(); 
     } catch (error: any) {
